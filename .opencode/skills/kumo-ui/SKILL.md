@@ -19,6 +19,21 @@ Cloudflare's React component library built on Base UI + Tailwind CSS v4.
 - `./references/components.md` - Full component reference with props, variants, and usage
 - `./references/tokens.md` - Semantic color tokens for text, background, border
 - `./references/patterns.md` - Common patterns: Field wrapper, compound components, loading states
+- `./references/base-ui-headless.md` - Base UI headless primitives to use when Kumo does not yet expose a component
+
+## When Kumo Lacks a Component
+
+Use this order of operations:
+
+1. **Check existing Kumo exports first** in `./references/components.md`.
+2. **Compose with existing Kumo primitives** (`Field`, `Label`, `Surface`, `Button`, semantic tokens).
+3. **Then reach for Base UI headless primitives** using `./references/base-ui-headless.md` as the source of truth.
+
+When building on Base UI, keep Kumo conventions:
+
+- Preserve Kumo theming (`bg-kumo-*`, `text-kumo-*`, `border-kumo-*`)
+- Keep accessibility wiring from the headless primitive (trigger/content/label relationships, keyboard behavior)
+- Prefer Kumo composition patterns (`.Root`, `.Trigger`, `.Content`) for consistency
 
 ## CSS Setup (Required)
 
