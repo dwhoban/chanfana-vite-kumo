@@ -2,11 +2,7 @@ import { OpenAPIRoute, contentJson, fromHono } from "chanfana";
 import { Hono, type Context } from "hono";
 import { z } from "zod";
 
-type Bindings = Env & {
-  DB: D1Database;
-};
-
-type AppContext = Context<{ Bindings: Bindings }>;
+type AppContext = Context<{ Bindings: Env }>;
 
 class HealthEndpoint extends OpenAPIRoute {
   schema = {
@@ -23,11 +19,24 @@ class HealthEndpoint extends OpenAPIRoute {
   };
 
   async handle(_c: AppContext) {
+    console.log(JSON.stringify({ message: "health check" }));
     return { name: "Cloudflare" };
   }
 }
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Env }>();
+
+app.onError((err, c) => {
+  console.error(
+    JSON.stringify({
+      message: "unhandled error",
+      error: err instanceof Error ? err.message : String(err),
+      path: new URL(c.req.url).pathname,
+    }),
+  );
+  return c.json({ error: "Internal server error" }, 500);
+});
+
 const openapi = fromHono(app, {
   docs_url: "/api/docs",
   openapi_url: "/api/openapi.json",
