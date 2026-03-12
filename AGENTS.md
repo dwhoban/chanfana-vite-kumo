@@ -1,160 +1,154 @@
-# Oppy
+# AGENTS Guide (Current Project State)
 
-STOP. Load the relevant **Skill** before starting any task. Always commit using **conventional commits** after completing work.
+This file is for autonomous coding agents working in this repository.
 
-## Skills by Use Case
+## First Principles
 
-**Cloudflare Platform:** `cloudflare`, `wrangler`, `workers-best-practices`, `hono`, `chanfana`, `kumo-ui`, `durable-objects`, `agents-sdk`, `building-ai-agent-on-cloudflare`, `building-mcp-server-on-cloudflare`, `sandbox-sdk`
+1. Load the most relevant local skill before making changes.
+2. Prefer repository truth over assumptions.
+3. After each completed task/todo, commit edited files automatically.
+4. Use conventional commits for every commit.
 
-**Frontend & UI:** `tanstack-router`, `tanstack-query`, `tanstack-table`, `tanstack-form`, `web-perf`
+## Required Discovery Order (Do This Before Web Search)
 
-**Planning & Architecture:** `prd`, `breakdown-epic-pm`, `breakdown-epic-arch`, `breakdown-feature-prd`, `breakdown-feature-implementation`, `breakdown-plan`, `breakdown-test`, `create-implementation-plan`, `create-architectural-decision-record`
+Use this order every time:
 
-**Documentation:** `documentation-writer`, `conventional-commit`, `code-exemplars-blueprint-generator`, `folder-structure-blueprint-generator`, `technology-stack-blueprint-generator`, `architecture-blueprint-generator`, `readme-blueprint-generator`, `project-workflow-analysis-blueprint-generator`
+1. Skills in `.agents/skills/` and `.opencode/skills/`
+2. MCP tools (Cloudflare, bindings, observability, browser, etc.)
+3. Local CLI tools (`pnpm`, `wrangler`, `vitest`, `eslint`, `tsc`, `rg`)
+4. Local code search (`rg`, project grep/glob tools)
+5. `webfetch` / external web search only as a last resort
 
-## Stack
+If docs are needed for Cloudflare, use Cloudflare docs MCP before external sites.
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, TanStack Router, Tailwind CSS v4, @cloudflare/kumo |
-| Backend | Hono, chanfana (OpenAPI), Zod v4 |
-| Runtime | Cloudflare Workers (nodejs_compat) |
-| Build | Vite 6, @cloudflare/vite-plugin |
-| Icons | @phosphor-icons/react |
-| Package manager | **pnpm** |
+## Repo Snapshot
+
+- Runtime: Cloudflare Workers
+- Frontend: React 19 + TanStack Router + TanStack Query + Kumo UI
+- Backend: Hono + Chanfana (OpenAPI) + Zod v4
+- Build: Vite 6 + `@cloudflare/vite-plugin`
+- Package manager: `pnpm`
+- Worker entry: `src/server/index.ts`
+- API docs routes: `/api/docs`, `/api/openapi.json`
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm dev` | Start Vite dev server (localhost:5173) |
-| `pnpm build` | Type-check + Vite production build |
-| `pnpm check` | Full check: tsc + build + deploy dry-run |
-| `pnpm lint` | Run oxlint |
-| `pnpm lint:fix` | Run oxlint with auto-fix |
-| `pnpm fmt` | Format with oxfmt |
-| `pnpm fmt:check` | Check formatting without writing |
-| `pnpm preview` | Build + preview production locally |
-| `pnpm deploy` | Deploy to Cloudflare Workers |
-| `pnpm cf-typegen` | Regenerate `worker-configuration.d.ts` |
+### Core
+
+- `pnpm dev` - start Vite dev server
+- `pnpm build` - type-check + production build
+- `pnpm preview` - build then preview production bundle
+- `pnpm check` - `tsc` + `vite build` + `wrangler deploy --dry-run`
+- `pnpm deploy` - deploy Worker
+- `pnpm cf-typegen` - regenerate `worker-configuration.d.ts`
+
+### Lint / Type / Format
+
+- `pnpm lint` - run ESLint
+- `pnpm exec tsc -b` - run project references type-check
+- `pnpm exec oxfmt .` - format (if needed; no npm script yet)
+- `pnpm exec oxlint .` - optional secondary linting
+
+### Tests (Vitest)
+
+- `pnpm exec vitest` - run tests in watch mode
+- `pnpm exec vitest run` - run once (CI style)
+- `pnpm exec vitest run src/client/components/kumo/resource-list/resource-list.test.tsx` - run a single test file
+- `pnpm exec vitest -t "should be defined"` - run a single test by name
+
+## Commit Policy (Automatic)
+
+When a task/todo is complete:
+
+1. Stage only intended files.
+2. Commit immediately.
+3. Use Conventional Commits: `type(scope): subject`.
+
+Recommended types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`.
+
+## Source Layout
+
+```text
+src/
+  client/
+    main.tsx
+    router.tsx
+    routeTree.gen.ts
+    routes/
+      __root.tsx
+      index.tsx
+      forms.tsx
+      tables.tsx
+    components/kumo/
+    lib/
+  server/
+    index.ts
+```
+
+## Style and Conventions
+
+### TypeScript
+
+- Keep strict typing; avoid `any`.
+- Prefer explicit types for shared contracts and component props.
+- Use `type` for simple object/union aliases unless interface extension is needed.
+- Do not leave unused locals/params.
+
+### Imports
+
+- Use ESM imports only.
+- Group imports: external packages, then internal relative imports.
+- Keep import style consistent with neighboring files.
+- In this repo, relative imports commonly include extension suffixes (e.g. `./routeTree.gen.ts`).
+
+### Naming
+
+- Route files: file-based, lowercase (`index.tsx`, `forms.tsx`, `tables.tsx`, `__root.tsx`).
+- Components/types: PascalCase (`ResourceListPage`, `NavigationItem`).
+- Variables/functions: camelCase.
+- Directory and utility filenames: kebab-case or camelCase as already established.
+
+### React / UI
+
+- Function components only.
+- Router setup lives in `src/client/router.tsx` and `src/client/routes/*`.
+- Use Kumo + Tailwind utility classes; keep classes readable and grouped logically.
+- Use `cn` from Kumo for conditional class composition.
+
+### API / Server
+
+- Define API in `src/server/index.ts` using Hono + Chanfana.
+- Keep endpoints under `/api/*`.
+- Provide OpenAPI schema for routes (responses at minimum).
+- Prefer Zod schemas for request/response validation.
+- Keep Worker bindings typed (e.g. `DB: D1Database`).
+
+### Error Handling
+
+- Do not throw raw strings.
+- Throw typed errors/exceptions with actionable messages.
+- Return consistent JSON error shapes for API responses.
+- Validate input early and fail fast.
 
 ### Testing
 
-```bash
-pnpm vitest                  # Run all tests (watch mode)
-pnpm vitest run              # Run once (CI mode)
-pnpm vitest run src/path     # Run tests in directory
-pnpm vitest run path/file    # Run single test file
-pnpm vitest -t "test name"   # Run by test name pattern
-```
+- Place tests near code as `*.test.ts` or `*.test.tsx`.
+- Test public behavior, not implementation details.
+- Keep tests deterministic; avoid hidden network/time dependencies.
 
-Place test files as `*.test.ts` or `*.test.tsx` next to source.
+## Cloudflare Configuration Notes
 
-## Code Style
+- Config file: `wrangler.jsonc`
+- Assets are served from `./dist/client`
+- Worker-first routing is configured for `/api/*`
+- Placeholder D1 binding exists: `DB`
 
-### Formatting (oxfmt)
-- Formatter is **oxfmt** (NOT Prettier). Config in `.oxfmtrc.json`.
-- Tailwind class sorting enabled in `clsx()` and `cn()` calls
-- Never install/configure Prettier
+## Cursor and Copilot Rules
 
-### Linting (oxlint)
-Key enforced rules:
-- `no-explicit-any` — **error**. Never use `any`. Use `unknown` or proper types.
-- `no-unused-vars`, `prefer-const`, `no-var` — **error**
-- `no-debugger`, `no-empty` — **error**
-- `react-hooks/rules-of-hooks` — **error**
-- `@typescript-eslint/ban-ts-comment` — **error** (no `@ts-ignore`)
+At the time of writing, no project-specific Cursor or Copilot instruction files were found:
 
-### TypeScript
-- **Strict mode** enabled across all tsconfigs
-- `noUnusedLocals`, `noUnusedParameters` — enabled
-- Three tsconfig scopes: `tsconfig.app.json` (client), `tsconfig.server.json` (server), `tsconfig.node.json` (build)
-- Target: ES2020 (client), ES2022 (server/node)
-- Module resolution: `bundler`
-- JSX: `react-jsx`
+- `.cursor/rules/` (not present)
+- `.cursorrules` (not present)
+- `.github/copilot-instructions.md` (not present)
 
-### Imports
-- ES modules only (`"type": "module"`)
-- Use `.tsx` extensions in relative imports (e.g., `import App from "./App.tsx"`)
-- External packages: no extensions
-- Order: external packages → relative imports → CSS
-
-### Naming Conventions
-- **Components**: PascalCase (`HomePage.tsx`)
-- **Routes**: PascalCase with `Page` suffix (`AboutPage.tsx`)
-- **Non-component files**: camelCase (`router.tsx`)
-- **CSS classes**: kebab-case (`app-shell`)
-- **Variables/functions**: camelCase
-- **Types/interfaces**: PascalCase
-- **Constants**: camelCase (not SCREAMING_CASE)
-
-### React Patterns
-- Function components only (no class components)
-- Default export for root `App`; named exports for pages
-- TanStack Router for routing — define routes in `src/client/router.tsx`
-- `StrictMode` wrapping at root
-
-### Server Patterns (Hono)
-- Type Hono app with `Hono<{ Bindings: Env }>` for Cloudflare bindings
-- Default export the Hono app instance
-- API routes prefixed with `/api/`
-- `Env` interface generated in `worker-configuration.d.ts`
-
-### Styling
-- **Tailwind CSS v4** with Kumo design system (`@cloudflare/kumo`)
-- Import order in `index.css`: Kumo source → Kumo styles → Tailwindcss
-- Use `clsx()` or `cn()` for conditional class merging
-
-## Project Structure
-
-```
-src/
-  client/          # React frontend
-    main.tsx       # Entry — StrictMode + RouterProvider
-    router.tsx     # TanStack Router definitions
-    App.tsx        # Root layout with nav
-    routes/        # Page components
-    index.css      # Tailwind + Kumo imports
-  server/          # Hono API
-    index.ts       # Hono app — default export
-```
-
-## Cloudflare Workers
-
-- Config: `wrangler.jsonc` (JSONC, not JSON)
-- Worker name: `oppy`
-- Entry: `src/server/index.ts`
-- Compatibility date: `2025-03-09`
-- Flags: `nodejs_compat`
-- Observability: enabled, source maps uploaded
-- Assets: `./dist/client` with SPA fallback
-
-### Committing
-
-**Always use conventional commits.** Load the `conventional-commit` skill for detailed guidance.
-
-Format: `type(scope): subject`
-
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`
-
-Examples:
-```
-feat(auth): add OAuth login flow
-fix(api): handle null response from D1
-refactor(router): extract auth middleware
-```
-
-## MCPs
-
-- **cloudflare-docs** — Search Cloudflare documentation
-- **cloudflare-api** — Search/execute Cloudflare API
-- **cloudflare-bindings** — Manage KV, R2, D1, Hyperdrive
-- **cloudflare-builds** — Inspect Workers builds and logs
-- **cloudflare-observability** — Query worker logs and metrics
-- **chrome-devtools** — Browser automation, performance traces
-
-## Docs
-
-- Workers: https://developers.cloudflare.com/workers/
-- Node.js compat: https://developers.cloudflare.com/workers/runtime-apis/nodejs/
-- Errors: https://developers.cloudflare.com/workers/observability/errors/
+If these files appear later, read and apply them before coding.
