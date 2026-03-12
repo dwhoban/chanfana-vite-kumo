@@ -1,10 +1,9 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  // "plugins": [],
   "env": {
     "builtin": true
   },
-  "ignorePatterns": ["dist", "*.d.ts", ".wrangler", ".tanstack", ".sisyphus"],
+  "ignorePatterns": ["dist", "*.d.ts", ".wrangler", ".tanstack", "*.d.ts"],
   "options": {
     "typeAware": true,
     "typeCheck": true
