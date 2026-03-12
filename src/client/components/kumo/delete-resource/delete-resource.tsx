@@ -1,11 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
-import { Dialog, DialogRoot, DialogTitle, DialogClose, Input, Button, cn, Banner } from "@cloudflare/kumo";
 import {
-  CheckIcon,
-  CopyIcon,
-  WarningCircleIcon,
-  XIcon,
-} from "@phosphor-icons/react";
+  Dialog,
+  DialogRoot,
+  DialogTitle,
+  DialogClose,
+  Input,
+  Button,
+  cn,
+  Banner,
+} from "@cloudflare/kumo";
+import { CheckIcon, CopyIcon, WarningCircleIcon, XIcon } from "@phosphor-icons/react";
 
 export const KUMO_DELETE_RESOURCE_VARIANTS = {
   size: {
@@ -24,8 +28,7 @@ export const KUMO_DELETE_RESOURCE_DEFAULT_VARIANTS = {
   size: "base",
 } as const;
 
-export type KumoDeleteResourceSize =
-  keyof typeof KUMO_DELETE_RESOURCE_VARIANTS.size;
+export type KumoDeleteResourceSize = keyof typeof KUMO_DELETE_RESOURCE_VARIANTS.size;
 
 export interface KumoDeleteResourceVariantsProps {
   size?: KumoDeleteResourceSize;
@@ -83,8 +86,7 @@ export function DeleteResource({
   );
 
   const isConfirmed =
-    normalizeForComparison(confirmationInput) ===
-    normalizeForComparison(resourceName);
+    normalizeForComparison(confirmationInput) === normalizeForComparison(resourceName);
 
   const handleDelete = useCallback(async () => {
     if (!isConfirmed || isDeleting) return;
@@ -101,9 +103,7 @@ export function DeleteResource({
     <DialogRoot open={open} onOpenChange={onOpenChange}>
       <Dialog size={size} className={cn("p-0", className)}>
         <div className="flex items-center justify-between border-b border-kumo-line px-6 py-4">
-          <DialogTitle className="text-lg font-semibold">
-            Delete {resourceName}
-          </DialogTitle>
+          <DialogTitle className="text-lg font-semibold">Delete {resourceName}</DialogTitle>
           <DialogClose
             render={(props) => (
               <Button
@@ -120,18 +120,16 @@ export function DeleteResource({
           />
         </div>
 
-        <div className="flex flex-col p-6 gap-4">
+        <div className="flex flex-col gap-4 p-6">
           <div className="flex flex-col gap-2">
             {errorMessage && (
               <Banner icon={<WarningCircleIcon />} variant="error">
                 {errorMessage}
               </Banner>
             )}
-            <p className="text-base text-kumo-subtle max-w-prose text-pretty">
+            <p className="max-w-prose text-base text-pretty text-kumo-subtle">
               This action cannot be undone. This will permanently delete the{" "}
-              <span className="font-medium text-kumo-default">
-                {resourceName}
-              </span>{" "}
+              <span className="font-medium text-kumo-default">{resourceName}</span>{" "}
               {resourceType.toLowerCase()}.
             </p>
           </div>
@@ -141,23 +139,19 @@ export function DeleteResource({
               <span>
                 Type{" "}
                 <button
-                  className="font-mono text-sm inline font-semibold bg-kumo-tint hover:bg-kumo-fill rounded-md px-2 py-1 group hover:cursor-pointer"
+                  className="group inline rounded-md bg-kumo-tint px-2 py-1 font-mono text-sm font-semibold hover:cursor-pointer hover:bg-kumo-fill"
                   onClick={handleCopy}
                   aria-label={`Copy ${resourceName} to clipboard`}
                 >
                   {resourceName}
 
                   {copied ? (
-                    <CheckIcon
-                      size={12}
-                      weight="bold"
-                      className="inline ml-1.5"
-                    />
+                    <CheckIcon size={12} weight="bold" className="ml-1.5 inline" />
                   ) : (
                     <CopyIcon
                       size={12}
                       weight="bold"
-                      className="inline text-kumo-subtle group-hover:text-kumo-default ml-1.5"
+                      className="ml-1.5 inline text-kumo-subtle group-hover:text-kumo-default"
                     />
                   )}
                 </button>{" "}

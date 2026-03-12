@@ -27,19 +27,12 @@ export function ResourceListPage({
   className,
 }: ResourceListPageProps) {
   return (
-    <div
-      className={cn(
-        "h-full min-h-screen w-full bg-kumo-overlay",
-        className,
-      )}
-    >
+    <div className={cn("h-full min-h-screen w-full bg-kumo-overlay", className)}>
       <div className="mx-auto flex max-w-[1400px] flex-col p-6 md:gap-4 md:p-8 lg:px-10 lg:py-9 xl:gap-6">
         <div className="flex flex-col">
           <div className="mb-1.5 flex items-center gap-1.5">
             {icon}
-            <h1 className="font-heading m-0 p-0 text-3xl font-semibold">
-              {title}
-            </h1>
+            <h1 className="font-heading m-0 p-0 text-3xl font-semibold">{title}</h1>
           </div>
           <p className="hidden p-0 text-lg leading-normal text-pretty text-kumo-strong md:block">
             {description}
@@ -55,9 +48,7 @@ export function ResourceListPage({
             >
               {usage}
 
-              <div className={cn("hidden xl:block", usage ? "mt-6" : "")}>
-                {additionalContent}
-              </div>
+              <div className={cn("hidden xl:block", usage ? "mt-6" : "")}>{additionalContent}</div>
             </div>
           )}
         </div>

@@ -19,23 +19,23 @@ Always prefer Kumo first, then compose with existing Kumo primitives, then use B
 
 Use this mapping when you need lower-level control or parity for behavior.
 
-| Kumo component | Base UI primitive |
-| --- | --- |
-| `Dialog` | `Dialog` |
-| `DropdownMenu` | `Menu` |
-| `Popover` | `Popover` |
-| `Tooltip` | `Tooltip` |
-| `Input` | `Input` + `Field` |
-| `Select` | `Select` |
-| `Combobox` | `Combobox` / `Autocomplete` |
-| `Checkbox` | `Checkbox` |
-| `Checkbox.Group` | `Checkbox Group` |
-| `Radio.Group` | `Radio` |
-| `Switch` | `Switch` |
-| `Tabs` | `Tabs` |
-| `Meter` | `Meter` |
-| `Toast` | `Toast` |
-| `Collapsible` | `Collapsible` |
+| Kumo component   | Base UI primitive           |
+| ---------------- | --------------------------- |
+| `Dialog`         | `Dialog`                    |
+| `DropdownMenu`   | `Menu`                      |
+| `Popover`        | `Popover`                   |
+| `Tooltip`        | `Tooltip`                   |
+| `Input`          | `Input` + `Field`           |
+| `Select`         | `Select`                    |
+| `Combobox`       | `Combobox` / `Autocomplete` |
+| `Checkbox`       | `Checkbox`                  |
+| `Checkbox.Group` | `Checkbox Group`            |
+| `Radio.Group`    | `Radio`                     |
+| `Switch`         | `Switch`                    |
+| `Tabs`           | `Tabs`                      |
+| `Meter`          | `Meter`                     |
+| `Toast`          | `Toast`                     |
+| `Collapsible`    | `Collapsible`               |
 
 ## High-value Base UI primitives not currently represented in Kumo docs
 

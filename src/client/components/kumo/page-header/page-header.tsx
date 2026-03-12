@@ -22,8 +22,7 @@ export const KUMO_PAGE_HEADER_DEFAULT_VARIANTS = {
   spacing: "base",
 } as const;
 
-export type KumoPageHeaderSpacing =
-  keyof typeof KUMO_PAGE_HEADER_VARIANTS.spacing;
+export type KumoPageHeaderSpacing = keyof typeof KUMO_PAGE_HEADER_VARIANTS.spacing;
 
 export interface KumoPageHeaderVariantsProps {
   spacing?: KumoPageHeaderSpacing;
@@ -32,10 +31,7 @@ export interface KumoPageHeaderVariantsProps {
 export function pageHeaderVariants({
   spacing = KUMO_PAGE_HEADER_DEFAULT_VARIANTS.spacing,
 }: KumoPageHeaderVariantsProps = {}) {
-  return cn(
-    "flex flex-col",
-    KUMO_PAGE_HEADER_VARIANTS.spacing[spacing].classes,
-  );
+  return cn("flex flex-col", KUMO_PAGE_HEADER_VARIANTS.spacing[spacing].classes);
 }
 
 export interface PageHeaderProps extends KumoPageHeaderVariantsProps {
@@ -67,15 +63,9 @@ export function PageHeader({
       {(title || description) && (
         <div className="flex flex-col gap-2 py-3 pl-3">
           {title && (
-            <h1 className="font-heading text-3xl font-semibold text-kumo-default">
-              {title}
-            </h1>
+            <h1 className="font-heading text-3xl font-semibold text-kumo-default">{title}</h1>
           )}
-          {description && (
-            <p className="max-w-prose text-base text-kumo-subtle">
-              {description}
-            </p>
-          )}
+          {description && <p className="max-w-prose text-base text-kumo-subtle">{description}</p>}
         </div>
       )}
 
