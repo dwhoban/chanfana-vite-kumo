@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [".agents", "*.d.ts", ".wrangler", ".tanstack", ".sisyphus"],
+  "sortTailwindcss": {
+    "stylesheet": "./src/client/index.css",
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": true
+  },
+  "sortPackageJson": {
+    "sortScripts": true
+  },
+  "embeddedLanguageFormatting": "auto"
+}

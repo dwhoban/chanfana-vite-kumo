@@ -12,9 +12,18 @@
 		"publish": true
 	},
 	"dependencies": {
+		"@cloudflare/kumo": "^1.10.0",
+		"@phosphor-icons/react": "^2.1.10",
+		"@tailwindcss/vite": "^4.2.1",
+		"@tanstack/react-form": "^1.28.4",
+		"@tanstack/react-query": "^5.90.21",
+		"@tanstack/react-table": "^8.21.3",
+		"chanfana": "^3.2.1",
 		"hono": "4.11.1",
 		"react": "19.2.1",
-		"react-dom": "19.2.1"
+		"react-dom": "19.2.1",
+		"tailwindcss": "^4.2.1",
+		"zod": "^4.3.6"
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "1.15.3",
