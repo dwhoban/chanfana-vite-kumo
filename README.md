@@ -1,90 +1,98 @@
-# Chanfana + React + Vite  + Cloudflare Workers
+# Chanfana + React + Vite + Kumo + Cloudflare Workers
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/dwhoban/chanfana-vite-kumo)
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+This template provides a full-stack setup for building a React application with Vite and an API powered by Hono + Chanfana, designed to run on Cloudflare Workers.
 
 ![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
 
 <!-- dash-content-start -->
 
-🚀 Supercharge your web development with this powerful stack:
+Build quickly with a modern Cloudflare-first stack:
 
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
+- [**React**](https://react.dev/) for the frontend UI
+- [**Vite**](https://vite.dev/) for fast local development and builds
+- [**@cloudflare/kumo**](https://www.npmjs.com/package/@cloudflare/kumo) for UI primitives and styles
+- [**Hono**](https://hono.dev/) for the API router
+- [**Chanfana**](https://www.chanfana.pages.dev/) for OpenAPI-first endpoint definitions
+- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) for global deployment
 
-### ✨ Key Features
+### Key Features
 
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
-
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
+- TypeScript across client and server
+- OpenAPI docs and schema generation under `/api`
+- SPA assets served by Workers with `/api/*` routed to the Worker first
+- Built-in observability configuration for logs and traces
+- `pnpm`-based development and deployment workflow
 
 <!-- dash-content-end -->
 
 ## Getting Started
 
-To start a new project with this template, run:
+Clone this repository and install dependencies:
 
 ```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
+pnpm install
 ```
 
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
-
-## Development
-
-Install dependencies:
+Start local development:
 
 ```bash
-npm install
+pnpm dev
 ```
 
-Start the development server with:
+The app is available at `http://localhost:5173`.
+
+## API and OpenAPI Routes
+
+- Health endpoint: `GET /api/`
+- OpenAPI JSON: `GET /api/openapi.json`
+- OpenAPI docs UI: `GET /api/docs`
+
+## D1 Setup (DB Binding)
+
+Create a D1 database:
 
 ```bash
-npm run dev
+pnpm wrangler d1 create your-database-name
 ```
 
-Your application will be available at [http://localhost:5173](http://localhost:5173).
-
-## Production
-
-Build your project for production:
+Then update `wrangler.jsonc` with the generated `database_name` and `database_id` for the `DB` binding, and regenerate Worker types:
 
 ```bash
-npm run build
+pnpm cf-typegen
 ```
 
-Preview your build locally:
+## Build, Check, and Deploy
+
+Build for production:
 
 ```bash
-npm run preview
+pnpm build
 ```
 
-Deploy your project to Cloudflare Workers:
+Run full project checks (type-check, build, deploy dry-run):
 
 ```bash
-npm run build && npm run deploy
+pnpm check
 ```
 
-Monitor your workers:
+Preview production build locally:
 
 ```bash
-npx wrangler tail
+pnpm preview
+```
+
+Deploy to Cloudflare Workers:
+
+```bash
+pnpm deploy
 ```
 
 ## Additional Resources
 
 - [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
+- [Wrangler Configuration](https://developers.cloudflare.com/workers/wrangler/configuration/)
+- [Vite Documentation](https://vite.dev/guide/)
+- [React Documentation](https://react.dev/)
 - [Hono Documentation](https://hono.dev/)
